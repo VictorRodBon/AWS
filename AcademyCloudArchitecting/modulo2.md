@@ -150,3 +150,45 @@ Al diseñar una solución, piensa en las ventajas y desventajas para poder selec
     - Para las nuevas características, priorizar la velocidad de comercialización por encima del costo.
 - Base a las decisiones de diseño en datos empíricos.
 
+
+### Implementación de la escalabilidad:
+
+### Automatización del entorno:
+
+### Uso de IaC:
+
+### Tratamiento de los recursos como desechables:
+
+### Uso de débilmente acoplados:
+
+### Diseño de servicios, no servidores:
+
+### Elección de la base de datos adecuada:
+
+### Evitación de los púntos únicos de error:
+
+### Optimización de costos:
+
+### Uso de almacenamiento en caché:
+
+### Protección de toda su infraestructura:
+
+### Conclusiones de las prácticas recomendadas para crear soluciones en AWS:
+
+## INFRAESTRUCTURA GLOBAL DE AWS:
+
+### Temas de la infraestructura de AWS:
+
+### Selección de las regiones:
+
+### Selección de zonas de disponibilidad:
+
+### Uso de zonas locales:
+
+### Rol de los centros de datos de AWS:
+
+### PoP de AWS:
+
+### Conclucioens de la infraestructura global de AWS:
+
+##
