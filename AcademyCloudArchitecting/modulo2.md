@@ -150,22 +150,101 @@ Al diseñar una solución, piensa en las ventajas y desventajas para poder selec
     - Para las nuevas características, priorizar la velocidad de comercialización por encima del costo.
 - Base a las decisiones de diseño en datos empíricos.
 
+Las desventajas pueden incrementar el costo y la complejidad de una arquitectura. 
+    Realizar pruebas de carga para asegurarse de obtener un beneficio medible del rendimiento.
+    Realizar análisis comparativos para lograr la carga de trabajo con menores costos.
 
 ### Implementación de la escalabilidad:
+- Los usuarios rara vezexperimentan una indterrupción del servicio.
+- *Amazon EC2 Auto Scaling* recibe la alerta y escala.
+- El nuevo servidor está listo antes de que se alcance la capacidad total.
+
+Cuando ejecuta sus cargas de trabajo en la nube de AWS, puede escalar su infraestructura con rapidez y de manera proactiva.
+
+Implementar la escalabilidad en cada capa de la infraestructura puede mejorar su diseño para anticipar la necesidad de más capacidad y entregarla antes de que sea demasiado tarde.
+
+Ej:
+> Usar Amazon *CloudWatch* para determinar si la carga todctal de todos los servidores alcanzó un umbral específico. El umbral puede ser cualquier magnitud siempre que esté relacionado con los recursos del servidor. Con *CloudWatch*, también puede diseñar métricas personalizadas basadas en aplicaciones específicas.
+
+Cuando se invoca una alarma, *Amazon EC2 Auto Scaling* inicia una nueva instancia, de manera que esté lista antes de que se alcance el máximo de la capacidad.
 
 ### Automatización del entorno:
+- El servidor de aplicaciones falla.
+- Amazon CloudWatch detecta de manera automática la instancia en mal estado.
+- Amazon EC2 Auto Scalling se inicia y configura un servidor idéntico.
+- Una alarma notifica al administrador.
+- CloudWatch registra la acción en una solución de administración de cambios.
+
+AWS ofrece herramientas de suoervisión y automatización en casi todas las capas de su infraestructura. Estas herramientas evitan tener que detectar y comunicar errores en los servidores al administrador y tener que crear nuevas instancias.
 
 ### Uso de IaC:
+- Aprovisione su infraestructúra mediante código en lñugar de procesos manuales.
+    - Implemente rápidamente entornos duplicados.
+    - Reduzca los errores de configuración derivados de la configuración manual.
+    - Propague los cambios de forma coherente a todas las pilas.
+
+La infraestrucura como código se utiliza para la automatización de la infraestructura con el fin de crear entornos. El uso más común es en el desarrollo de Software, para crear, probar e implmentar aplicaciones.
+
+Implemente entornos duplicados con solo una plantilla.
 
 ### Tratamiento de los recursos como desechables:
+- Aproveche la naturalezaa de aprovisionamiento dinámico de ka computación en la nube.
+    - Automatice la implementación de recursos nuevos con configuraciones idénticas.
+    - Detenga los recursos que no se utilizan.
+    - Pruebe las actualizaciones en los recursos nuevos, luego, reemplace kis recursos viejos por los actualizados.
+
+La práctica recomendada de tratar los recursos desechables se relaciona con la idea de considerar su infraestrucuta como software en lugar de como hardware.
+
+    Con el hardware, se pueden comprar más componentes de los necesarios, pero hacer esto es caro e inflexible.
+
+    Cuando se trata a los recursos como desechables, migrar entre instancias u otros recursos discretos es bastante sencillo.
 
 ### Uso de débilmente acoplados:
+- Diseñe arquitecturas con comportamientos independientes.
+- Práctica recomendada:
+    - Servidores web.
+    - Elastic Load Balancing (ELB).
+    - Servidores de aplicaciones.
+    > Servidores web desacoplados con Elastic Load Balancing (ELB),
+- Práctica no recomendada:
+    - Servidores web.
+    - Servidores de aplicaciones.
+    > Servidores web estrechamente acoplados a los servidores de aplicaciones.
+
+Las infraestructuras tradicionales se basan en cadenas de servidores estrechamente integrados (cada uno con un propósito específico). El problema es que cuando uno de esos componentes o capas deja de funcinar, la interrupción del sistema puede ser crítica. También impide el escalado (si agrega o quita servidores en una capa, tabién debe desconectar los servidores de cada capa de conexión).
+
+Con el acoplamiento debil, utiliza soluciones administradas como intermediarios entre capas de sus sistema.
 
 ### Diseño de servicios, no servidores:
+- Use la variedad de servicios de AWS. No limite su infraesttructura a servidores.
+    - Cuando corresponda, considere usar contenedores o una solución sin servidor.
+    - Las colas de mensajes pueden gestionar la comunicación entre aplicaciones.
+    - Los activos web estáticos se pueden almacenar fuera del servidor, como en Amazon Simple Storage Service (Amazon S3).
+    - Los servicios adminstrados de AWS pueden gestionar la autenticación de los usuarios y el almacenamiento del estado de los usuarios.
+
+La siguiente práctica recomendada e el uso de servicios, no servidores. Aunque Amazon EC2 ofrece flexibilidad, no siempre debe ser la primera opción. Los contenedores o una solución sin servidor pueden ser más adecuados para algunas situaciones.
+
+Con las soluciones sin servidor no es necesario configurar y administra toda una instancia de EC2.
+
+Las soluciones administradas tienen un perfil más bajo y un mejor rendimiento. Pueden reempazar soluciones basadas en servidor por un menor costo. Ejemplos: Lambda, SQS, DynamoDB, ELB, SES...
 
 ### Elección de la base de datos adecuada:
+- Adapte la tecnología a la carga de trabajo:
+    - Las necesidades de lectura y escritura.
+    - Los requisitos de almacenamiento totales.
+    - El tamaño habitual de los objetos y cómo se accede a ellos.
+    - Los requisitos de durabilidad.
+    - Los requisitos de latencia.
+    - El número máximo de usuarios conectados al mismo tiempo.
+    - La naturaleza de las consultas.
+    - La intensidad necesaria de los controles de integridad.
+
+Es importante escoger una solución de base de datos adecuada. En los centros de datos tradicionales y los entornos en las instalaciones, los límites sobre el hardware y las licencias disponibles pueden resultar una restricción al momento de elegir una solución.
 
 ### Evitación de los púntos únicos de error:
+Cuando sea posible, elimine los puntos únicos de error en su arquitectura. Esto no quiere decir que deba duplicar siempre cada componente. Dependiendo de sus acuerdos de nivel de servicio de tiempo de inactividad, puede usar soluciones automáticasque solo inician componentes cuando es neceesario. También puede usar un servicio administrado para que AWS sustituya el hardware que no funcinoa correctamente.
+
+Si hay dos servidores de aplicaciones conectados a un único servidor de base de datos, el servidor de base de datos representa un punto único de error. Una forma común de evitar los puntos únicos de error es crear un serbidor de base de datos secundario y replicar los datos. 
 
 ### Optimización de costos:
 
